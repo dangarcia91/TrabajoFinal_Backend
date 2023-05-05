@@ -20,6 +20,7 @@ class RegistroUsuario(APIView):
 
             return Response(data={
                 'message': 'Usuario creado exitosamente'
+                
             }, status=status.HTTP_201_CREATED)
         
         else:
