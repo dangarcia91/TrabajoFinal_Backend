@@ -44,7 +44,7 @@ class RegistroUsuario(APIView):
 
 class SendEmailView(generics.GenericAPIView):
     def post(self, request: Request):
-      
+    
         from_email=settings.DEFAULT_FROM_EMAIL
         sent_mail = send_mail(
                 "REGISTRADO",
