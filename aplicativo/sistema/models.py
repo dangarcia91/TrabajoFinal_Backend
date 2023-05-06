@@ -77,7 +77,7 @@ class VentasModel(models.Model):
     id = models.AutoField(primary_key=True)
     observacion = models.CharField(max_length=100)
     cliente_id = models.ForeignKey(ClientesModel, on_delete=models.CASCADE)
-    usuario_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    # usuario_id = models.ForeignKey(ClientesModel, on_delete=models.CASCADE)
 
     class Meta:
         db_table = "ventas"
@@ -85,7 +85,7 @@ class VentasModel(models.Model):
 class DetallesVentaModel(models.Model):
     id = models.AutoField(primary_key=True)
     cantidad = models.IntegerField()
-    producto_id = models.ForeignKey(ProductosModel, on_delete=models.CASCADE)
+    producto_id = models.ForeignKey(Producto, on_delete=models.CASCADE)
     venta_id = models.ForeignKey(VentasModel, on_delete=models.CASCADE, related_name='detallesVenta')
 
     class Meta:

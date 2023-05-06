@@ -40,7 +40,48 @@ class Perfilusuario(generics.GenericAPIView):
         return Response(data = {
             'content': serializador.data
         }, status=status.HTTP_200_OK)
+
+class CategoriaView(APIView):
+    serializer_class = CategoriaSerializer
+    Permission_classes = [IsAuthenticated]
     
+    def post(self, request: Request):
+        try:
+            data = {
+                'nombre': request.data.get('nombre'), 
+            }
+            data_serializada = CategoriaSerializer(data=data)
+            if data_serializada.is_valid():
+                data_serializada.save()
+
+                return Response(data= {
+                    'message': 'Categoría creado exitosamente',
+                    'content': data_serializada.data
+                }, status=status.HTTP_201_CREATED)
+            else:
+                print(data_serializada.errors)
+                return Response(data={
+                    'message': 'Error al crear la categoría',
+                    'content': data_serializada.errors,
+                }, status=status.HTTP_400_BAD_REQUEST)
+                print(serializador.error)
+            
+        except Exception as e:
+            return Response(data={
+                'message': 'Error al crear la categoría',
+                'content': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    def get(self, request: Request):
+        categorias = Categoria.objects.all()
+        data_serializada = CategoriaSerializer(instance=categorias, many=True)
+        print(categorias)
+
+        return Response(data={
+            'content': data_serializada.data
+        })
+    
+
 class ProductoView(generics.GenericAPIView):
     serializer_class = ProductoSerializer
     Permission_classes = [IsAuthenticated]
