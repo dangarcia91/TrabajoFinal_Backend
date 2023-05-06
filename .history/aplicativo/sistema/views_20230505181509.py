@@ -7,10 +7,8 @@ from .serializers import *
 from rest_framework.permissions import IsAuthenticated
 from .permissions import SoloClientes
 from cloudinary import uploader
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.shortcuts import render
-from django.conf import settings
-
 
 class RegistroUsuario(APIView):
     def post(self, request: Request):
@@ -24,7 +22,6 @@ class RegistroUsuario(APIView):
 
             return Response(data={
                 'message': 'Usuario creado exitosamente'
-                
             }, status=status.HTTP_201_CREATED)
         
         else:
@@ -32,7 +29,6 @@ class RegistroUsuario(APIView):
                 'message': 'Error al crear el usuario',
                 'content': serializador.errors
             }, status=status.HTTP_400_BAD_REQUEST)
-        
 # Envio de correo
     def send_email(email):
         pass
@@ -42,47 +38,6 @@ class RegistroUsuario(APIView):
             print('Envio de correo!')
 
         return render(request, 'index.html', {})
-
-class SendEmailView(generics.GenericAPIView):
-    def post(self, request: Request):
-    
-        from_email=settings.EMAIL_HOST_USER
-        print("from_email")
-        print(from_email)
-        sent_mail = send_mail(
-                "REGISTRADO",
-                "Usuario Creado",
-                from_email,
-                ["luiscruzv@outlook.com"],
-                html_message="<button> Registrado </button>",
-                fail_silently=False,
-            )
-        return Response({'msg': sent_mail}, status=200)
-
-# # Envio de correo
-#     def send_email(email):
-#         pass
-
-#     def index(request):
-#         if request.method == 'POST':
-#             print('Envio de correo!')
-
-#         return render(request, 'index.html', {})
-
-# class SendEmailView(generics.GenericAPIView):
-#     def post(self, request: Request):
-    
-#         from_email=settings.DEFAULT_FROM_EMAIL
-#         sent_mail = send_mail(
-#                 "REGISTRADO",
-#                 "Usuario Creado",
-#                 from_email,
-#                 ["luiscruzv@outlook.com"],
-#                 html_message="<button> Registrado </button>",
-#                 fail_silently=False,
-#             )
-#         return Response({'msg': sent_mail}, status=200)
-
 
 class Perfilusuario(generics.GenericAPIView):
     serializer_class = Personserializer
@@ -95,48 +50,7 @@ class Perfilusuario(generics.GenericAPIView):
         return Response(data = {
             'content': serializador.data
         }, status=status.HTTP_200_OK)
-
-class CategoriaView(APIView):
-    serializer_class = CategoriaSerializer
-    Permission_classes = [IsAuthenticated]
     
-    def post(self, request: Request):
-        try:
-            data = {
-                'nombre': request.data.get('nombre'), 
-            }
-            data_serializada = CategoriaSerializer(data=data)
-            if data_serializada.is_valid():
-                data_serializada.save()
-
-                return Response(data= {
-                    'message': 'Categoría creado exitosamente',
-                    'content': data_serializada.data
-                }, status=status.HTTP_201_CREATED)
-            else:
-                print(data_serializada.errors)
-                return Response(data={
-                    'message': 'Error al crear la categoría',
-                    'content': data_serializada.errors,
-                }, status=status.HTTP_400_BAD_REQUEST)
-                print(serializador.error)
-            
-        except Exception as e:
-            return Response(data={
-                'message': 'Error al crear la categoría',
-                'content': str(e)
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-    def get(self, request: Request):
-        categorias = Categoria.objects.all()
-        data_serializada = CategoriaSerializer(instance=categorias, many=True)
-        print(categorias)
-
-        return Response(data={
-            'content': data_serializada.data
-        })
-    
-
 class ProductoView(generics.GenericAPIView):
     serializer_class = ProductoSerializer
     Permission_classes = [IsAuthenticated]
@@ -178,11 +92,3 @@ class ProductoView(generics.GenericAPIView):
         return Response(data = {
             'content': serializador.data
         }, status=status.HTTP_200_OK)
-    
-# VIDEO: minuto 1:18
-
-#login: 1:53 minutos - JSON Web Token
-# pip install djangorestframework-simplejwt
-# pip install cloudinary
-# 1:58:44
-# Views Mascota: 3:08:00

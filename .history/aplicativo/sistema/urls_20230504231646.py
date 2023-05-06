@@ -6,9 +6,5 @@ urlpatterns = [
     path('registro', RegistroUsuario.as_view()),
     path('login', TokenObtainPairView.as_view()),
     path('perfil', Perfilusuario.as_view()),
-    path('categoria', CategoriaView.as_view()),
-    path('productos', ProductoView.as_view()),
-
-    path('send/', SendEmailView.as_view()),
-
+    path('productos', ProductoView.as_view())
 ]
