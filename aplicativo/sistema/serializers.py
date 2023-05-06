@@ -11,6 +11,11 @@ class Personserializer(ModelSerializer):
         model = Usuario
         fields = ['nombre', 'apellido', 'correo', 'tipoUsuario']
 
+class CategoriaSerializer(ModelSerializer):
+    class Meta:
+        model = Categoria
+        fields = '__all__'
+
 class ProductoSerializer(ModelSerializer):
     class Meta:
         model = Producto
