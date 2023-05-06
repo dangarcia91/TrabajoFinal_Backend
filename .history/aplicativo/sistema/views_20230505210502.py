@@ -44,14 +44,14 @@ class RegistroUsuario(APIView):
 
 class SendEmailView(generics.GenericAPIView):
     def post(self, request: Request):
-      
+        email = request.data.get('email')
         from_email=settings.DEFAULT_FROM_EMAIL
         sent_mail = send_mail(
-                "REGISTRADO",
+                "luiscruzv@outlook.com",
                 "Usuario Creado",
                 from_email,
-                ["luiscruzv@outlook.com"],
-                html_message="<button> Registrado </button>",
+                recipient_list.split(','),
+                html_message=html_,
                 fail_silently=False,
             )
         return Response({'msg': sent_mail}, status=200)

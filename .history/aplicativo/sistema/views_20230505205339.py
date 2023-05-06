@@ -7,10 +7,8 @@ from .serializers import *
 from rest_framework.permissions import IsAuthenticated
 from .permissions import SoloClientes
 from cloudinary import uploader
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.shortcuts import render
-from django.conf import settings
-
 
 class RegistroUsuario(APIView):
     def post(self, request: Request):
@@ -41,20 +39,6 @@ class RegistroUsuario(APIView):
             print('Envio de correo!')
 
         return render(request, 'index.html', {})
-
-class SendEmailView(generics.GenericAPIView):
-    def post(self, request: Request):
-      
-        from_email=settings.DEFAULT_FROM_EMAIL
-        sent_mail = send_mail(
-                "REGISTRADO",
-                "Usuario Creado",
-                from_email,
-                ["luiscruzv@outlook.com"],
-                html_message="<button> Registrado </button>",
-                fail_silently=False,
-            )
-        return Response({'msg': sent_mail}, status=200)
 
 class Perfilusuario(generics.GenericAPIView):
     serializer_class = Personserializer
