@@ -82,3 +82,11 @@ class ProductoView(generics.GenericAPIView):
         return Response(data = {
             'content': serializador.data
         }, status=status.HTTP_200_OK)
+    
+# VIDEO: minuto 1:18
+
+#login: 1:53 minutos - JSON Web Token
+# pip install djangorestframework-simplejwt
+# pip install cloudinary
+# 1:58:44
+# Views Mascota: 3:08:00
